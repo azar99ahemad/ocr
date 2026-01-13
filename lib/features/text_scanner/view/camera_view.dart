@@ -20,17 +20,14 @@ class _CameraViewState extends ConsumerState<CameraView> {
     super.initState();
     debugPrint('Camera initialized');
 
-
     // ✅ Cache notifier ONCE (safe)
     _cameraVM = ref.read(cameraProvider.notifier);
     debugPrint('Camera initialized2');
-
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _cameraVM.initialize();
     });
     debugPrint('Camera initialized3');
-
   }
 
   @override
@@ -45,40 +42,65 @@ class _CameraViewState extends ConsumerState<CameraView> {
     final controller = ref.watch(cameraProvider);
 
     if (controller == null || !controller.value.isInitialized) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator(color: Color(0xFF6E7454),)));
     }
 
     return Scaffold(
       body: Stack(
         children: [
-          CameraPreview(controller),
-
-          // Dark overlay
-          Container(color: Colors.black.withOpacity(0.4)),
-
-          // Transparent scan frame
-          Center(
-            child: Container(
-              width: 280,
-              height: 380,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white, width: 2),
+          SizedBox.expand(
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: SizedBox(
+                width: controller.value.previewSize!.height,
+                height: controller.value.previewSize!.width,
+                child: CameraPreview(controller),
               ),
             ),
           ),
 
-          // Instruction
-          const Positioned(
-            bottom: 120,
-            left: 0,
-            right: 0,
-            child: Text(
-              'Position your notes within the frame',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white70, fontSize: 14),
+          // Dark overlay
+          Container(color: Colors.black.withValues(alpha: 0.4)),
+
+          // Transparent scan frame
+          Center(
+            child: Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.white, width: 1),
+                    ),
+                  ),
+                ),
+                Text(
+                  'Position your notes within the frame',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+
+          // // Instruction
+          Positioned(
+            top: 40,
+            left: 16,
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.black.withValues(alpha: 0.5),
+                ),
+                child: const Icon(Icons.close, color: Colors.white, size: 24),
+              ),
             ),
           ),
 
@@ -93,6 +115,7 @@ class _CameraViewState extends ConsumerState<CameraView> {
                   final image = await _cameraVM.capture();
                   if (image == null) return;
 
+                  // ignore: use_build_context_synchronously
                   Navigator.pop(context, image.path);
                 },
                 child: Container(
