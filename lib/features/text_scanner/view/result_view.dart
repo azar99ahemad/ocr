@@ -125,7 +125,6 @@ import 'package:ocr/shared/widgets/topPill_button.dart';
 //   }
 // }
 
-
 class ResultView extends StatelessWidget {
   final String text;
   const ResultView({super.key, required this.text});
@@ -167,10 +166,7 @@ class ResultView extends StatelessWidget {
                   const Spacer(),
                   const Text(
                     'Result',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                   const Spacer(),
                   IconPillButton(
@@ -206,11 +202,11 @@ class ResultView extends StatelessWidget {
                       const SizedBox(height: 12),
                       Expanded(
                         child: SingleChildScrollView(
-                          child: SelectableText(
-                            text,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              height: 1.5,
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: SelectableText(
+                              text,
+                              style: const TextStyle(fontSize: 14, height: 1.5),
                             ),
                           ),
                         ),
@@ -234,9 +230,7 @@ class ResultView extends StatelessWidget {
                       onTap: () {
                         Clipboard.setData(ClipboardData(text: text));
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Copied to clipboard'),
-                          ),
+                          const SnackBar(content: Text('Copied to clipboard')),
                         );
                       },
                     ),
@@ -259,5 +253,3 @@ class ResultView extends StatelessWidget {
     );
   }
 }
-
-
