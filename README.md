@@ -1,7 +1,7 @@
 ![Frame 3](https://res.cloudinary.com/dxdwmc7ob/image/upload/v1768667034/notescan_gx3hla.png)
 
 
-# 📸 notescan – Flutter Text Scanner App
+# 📸 Notescan – Flutter Text Scanner App
 
 A Flutter-based **notescan (Optical Character Recognition)** application that allows users to **capture images using the device camera and extract text from them**.
 Built with a clean architecture mindset and ready for community contributions.
