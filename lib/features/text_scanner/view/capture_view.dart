@@ -47,7 +47,7 @@ class _CaptureViewState extends ConsumerState<CaptureView> {
       backgroundColor: const Color(0xFFF3F5E6),
       appBar: AppBar(
         title: const Text(
-          'OCR',
+          'Note Scan',
           style: TextStyle(
             color: Color(0xFF6E7454),
             fontWeight: FontWeight.w600,
