@@ -1,9 +1,9 @@
 ![Frame 3](https://res.cloudinary.com/dxdwmc7ob/image/upload/v1768667034/notescan_gx3hla.png)
 
 
-# 📸 OCR – Flutter Text Scanner App
+# 📸 notescan – Flutter Text Scanner App
 
-A Flutter-based **OCR (Optical Character Recognition)** application that allows users to **capture images using the device camera and extract text from them**.
+A Flutter-based **notescan (Optical Character Recognition)** application that allows users to **capture images using the device camera and extract text from them**.
 Built with a clean architecture mindset and ready for community contributions.
 
 ---
@@ -11,7 +11,7 @@ Built with a clean architecture mindset and ready for community contributions.
 ## ✨ Features
 
 * 📷 Capture images using the native device camera
-* 🔍 Scan and extract text from images (OCR)
+* 🔍 Scan and extract text from images (notescan)
 * ⚡ Fast and lightweight Flutter implementation
 * 🧠 Proper camera lifecycle handling (no memory leaks)
 * 📱 Android support (camera permissions configured)
@@ -25,7 +25,7 @@ Built with a clean architecture mindset and ready for community contributions.
 * **Dart**
 * **Camera plugin**
 * **State management** (Riverpod / Provider-style architecture)
-* **ML / OCR package** (can be swapped or extended)
+* **ML / notescan package** (can be swapped or extended)
 
 ---
 
@@ -36,7 +36,7 @@ lib/
  ├── camera/
  │    ├── camera_view.dart
  │    └── camera_view_model.dart
- ├── ocr/
+ ├── notescan/
  │    └── text_scanner.dart
  ├── providers/
  └── main.dart
@@ -57,8 +57,8 @@ lib/
 ### Installation
 
 ```bash
-git clone https://github.com/your-username/ocr.git
-cd ocr
+git clone https://github.com/your-username/notescan.git
+cd notescan
 flutter pub get
 flutter run
 ```
@@ -82,7 +82,7 @@ Make sure to **grant camera permission at runtime** on the device.
 1. User taps **Capture Image**
 2. Camera screen opens
 3. Image is captured
-4. OCR scans the image
+4. notescan scans the image
 5. Extracted text is returned to the app
 
 Camera resources are properly **disposed** to avoid memory leaks.
@@ -94,7 +94,7 @@ Camera resources are properly **disposed** to avoid memory leaks.
 * Safe disposal of camera controllers
 * Avoid using `ref` during widget unmount
 * Clear separation of UI and logic
-* Open for extension (OCR engine can be replaced)
+* Open for extension (notescan engine can be replaced)
 
 ---
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:ocr/shared/storage/scan_storage.dart';
+import 'package:notescan/shared/storage/scan_storage.dart';
 
 import 'app.dart';
 

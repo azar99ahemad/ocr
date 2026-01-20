@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:ocr/features/text_scanner/providers/text_scanner_provider.dart';
-import 'package:ocr/features/text_scanner/view/camera_view.dart';
-import 'package:ocr/features/text_scanner/view/result_view.dart';
-import 'package:ocr/features/text_scanner/viewmodel/text_scanner_state.dart';
-import 'package:ocr/shared/storage/scan_storage.dart';
-import 'package:ocr/shared/widgets/emptyState.dart';
-import 'package:ocr/shared/widgets/primary_button.dart';
-import 'package:ocr/shared/widgets/scanList.dart';
+import 'package:notescan/features/text_scanner/providers/text_scanner_provider.dart';
+import 'package:notescan/features/text_scanner/view/camera_view.dart';
+import 'package:notescan/features/text_scanner/view/result_view.dart';
+import 'package:notescan/features/text_scanner/viewmodel/text_scanner_state.dart';
+import 'package:notescan/shared/storage/scan_storage.dart';
+import 'package:notescan/shared/widgets/emptyState.dart';
+import 'package:notescan/shared/widgets/primary_button.dart';
+import 'package:notescan/shared/widgets/scanList.dart';
 
 class CaptureView extends ConsumerStatefulWidget {
   const CaptureView({super.key});

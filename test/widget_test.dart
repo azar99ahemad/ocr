@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ocr/app.dart';
+import 'package:notescan/app.dart';
 
 
 void main() {

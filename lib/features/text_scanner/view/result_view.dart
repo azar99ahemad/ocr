@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ocr/shared/storage/scan_storage.dart';
-import 'package:ocr/shared/widgets/IconPill_button.dart';
-import 'package:ocr/shared/widgets/primary_button.dart';
-import 'package:ocr/shared/widgets/topPill_button.dart';
+import 'package:notescan/shared/storage/scan_storage.dart';
+import 'package:notescan/shared/widgets/IconPill_button.dart';
+import 'package:notescan/shared/widgets/primary_button.dart';
+import 'package:notescan/shared/widgets/topPill_button.dart';
 
 class ResultView extends StatefulWidget {
   final String text;
@@ -16,15 +16,14 @@ class ResultView extends StatefulWidget {
 
 class _ResultViewState extends State<ResultView> {
   @override
-void initState() {
-  super.initState();
+  void initState() {
+    super.initState();
 
-  // Save ONLY if this is a new scan
-  if (widget.index == null) {
-    ScanStorage.save(widget.text);
+    // Save ONLY if this is a new scan
+    if (widget.index == null) {
+      ScanStorage.save(widget.text);
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -66,16 +65,14 @@ void initState() {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                   const Spacer(),
-                 if (widget.index != null) IconPillButton(
-                    icon: Icons.delete_outline,
-                    onTap: () {
-                      if (widget.index != null) {
+                  if (widget.index != null)
+                    IconPillButton(
+                      icon: Icons.delete_outline,
+                      onTap: () {
                         ScanStorage.deleteAt(widget.index!);
-                      }
-
-                      Navigator.pop(context);
-                    },
-                  ),
+                        Navigator.pop(context);
+                      },
+                    ),
                 ],
               ),
             ),

@@ -1,6 +1,6 @@
 {
-    "name": "ocr",
-    "short_name": "ocr",
+    "name": "notescan",
+    "short_name": "notescan",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

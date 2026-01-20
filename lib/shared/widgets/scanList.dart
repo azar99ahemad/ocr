@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ocr/features/text_scanner/view/result_view.dart';
+import 'package:notescan/features/text_scanner/view/result_view.dart';
 
 class ScanList extends StatelessWidget {
   final List<String> scans;

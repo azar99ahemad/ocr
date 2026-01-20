@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:camera/camera.dart';
-import 'package:ocr/features/text_scanner/viewmodel/camera_viewmodel.dart';
+import 'package:notescan/features/text_scanner/viewmodel/camera_viewmodel.dart';
 
 import '../providers/camera_provider.dart';
 

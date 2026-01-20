@@ -1,9 +1,9 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:ocr/core/provider/service_providers.dart';
-import 'package:ocr/core/services/image_picker_service.dart';
-import 'package:ocr/core/services/text_recognition_service.dart';
+import 'package:notescan/core/provider/service_providers.dart';
+import 'package:notescan/core/services/image_picker_service.dart';
+import 'package:notescan/core/services/text_recognition_service.dart';
 import 'text_scanner_state.dart';
 
 class TextScannerViewModel extends Notifier<TextScannerState> {
