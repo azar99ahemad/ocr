@@ -16,49 +16,40 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 52,
-      child: filled
-          ? ElevatedButton.icon(
-              onPressed: onTap,
-              icon: icon != null
-                  ? Icon(icon, size: 18, color: Colors.black)
-                  : const SizedBox.shrink(),
-              label: Text(
-                label,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFB9C28F), // soft green
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28),
-                ),
-              ),
-            )
-          : OutlinedButton.icon(
-              onPressed: onTap,
-              icon: icon != null
-                  ? Icon(icon, size: 18, color: Colors.black)
-                  : const SizedBox.shrink(),
-              label: Text(
-                label,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Colors.black26),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28),
-                ),
+    final bgColor = filled ? const Color(0xFFBFC89A) : Colors.transparent;
+    final borderColor =
+        filled ? const Color(0xFF9AA36F) : const Color(0xFF9AA36F);
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(32),
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        height: 56,
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(32),
+          border: Border.all(color: borderColor, width: 1.2),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (icon != null) ...[
+              Icon(icon, size: 18, color: Colors.black),
+              const SizedBox(width: 8),
+            ],
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.2,
               ),
             ),
+          ],
+        ),
+      ),
     );
   }
 }

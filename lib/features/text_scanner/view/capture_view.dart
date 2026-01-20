@@ -6,27 +6,26 @@ import 'package:ocr/features/text_scanner/providers/text_scanner_provider.dart';
 import 'package:ocr/features/text_scanner/view/camera_view.dart';
 import 'package:ocr/features/text_scanner/view/result_view.dart';
 import 'package:ocr/features/text_scanner/viewmodel/text_scanner_state.dart';
+import 'package:ocr/shared/storage/scan_storage.dart';
+import 'package:ocr/shared/widgets/emptyState.dart';
 import 'package:ocr/shared/widgets/primary_button.dart';
+import 'package:ocr/shared/widgets/scanList.dart';
 
-class CaptureView extends ConsumerWidget {
+class CaptureView extends ConsumerStatefulWidget {
   const CaptureView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(textScannerProvider);
+  ConsumerState<CaptureView> createState() => _CaptureViewState();
+}
 
-    // ref.listen(textScannerProvider, (previous, next) {
-    //   if ((previous?.text ?? '').isEmpty && next.text.isNotEmpty) {
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (_) => ResultView(text: next.text),
-    //       ),
-    //     ).then((_) {
-    //       ref.read(textScannerProvider.notifier).reset();
-    //     });
-    //   }
-    // });
+class _CaptureViewState extends ConsumerState<CaptureView> {
+  bool _fabOpen = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(textScannerProvider);
+    // final scans = ScanStorage.getAll();
+
 
     ref.listen<TextScannerState>(textScannerProvider, (previous, next) {
       final prevText = previous?.text ?? '';
@@ -34,15 +33,11 @@ class CaptureView extends ConsumerWidget {
 
       if (prevText.isEmpty && nextText.isNotEmpty) {
         showModalBottomSheet(
-          // useSafeArea: false,
-          // // enableDrag: true,
-
           context: context,
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
-          builder: (_) => ResultView(text: nextText),
+          builder: (_) => ResultView(text: nextText, index: null,),
         ).then((_) {
-          // ✅ reset only after sheet is closed
           ref.read(textScannerProvider.notifier).reset();
         });
       }
@@ -52,7 +47,7 @@ class CaptureView extends ConsumerWidget {
       backgroundColor: const Color(0xFFF3F5E6),
       appBar: AppBar(
         title: const Text(
-          'OCR ',
+          'OCR',
           style: TextStyle(
             color: Color(0xFF6E7454),
             fontWeight: FontWeight.w600,
@@ -62,81 +57,117 @@ class CaptureView extends ConsumerWidget {
         backgroundColor: const Color(0xFFF3F5E6),
       ),
       body: SafeArea(
+  child: Stack(
+    children: [
+      /// -------- Main Content --------
+      if (state.isLoading)
+        const Center(
+          child: CircularProgressIndicator(
+            color: Color(0xFF6E7454),
+          ),
+        )
+      else ValueListenableBuilder<List<String>>(
+  valueListenable: ScanStorage.scans,
+  builder: (context, scans, _) {
+    if (scans.isEmpty) return EmptyState();
+    return ScanList(scans: scans);
+  },
+),
+
+
+      /// -------- FAB Menu --------
+      Positioned(
+        bottom: 24,
+        right: 24,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            // -------- Empty State --------
-            Expanded(
-              child: Center(
-                child: state.isLoading
-                    ? const CircularProgressIndicator(color: Color(0xFF6E7454),)
-                    : Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(
-                            Icons.description_outlined,
-                            size: 64,
-                            color: Color(0xFFB9C28F),
+            SizedBox(
+              width: 260,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (child, animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0, 0.1),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    ),
+                  );
+                },
+                child: _fabOpen
+                    ? Column(
+                        key: const ValueKey('menu'),
+                        children: [
+                          PrimaryButton(
+                            label: 'Scan Text',
+                            icon: Icons.camera_alt,
+                            onTap: () async {
+                              setState(() => _fabOpen = false);
+
+                              final imagePath =
+                                  await Navigator.push<String>(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const CameraView(),
+                                ),
+                              );
+
+                              if (imagePath != null) {
+                                ref
+                                    .read(textScannerProvider.notifier)
+                                    .scanFromPath(imagePath);
+                              }
+                            },
                           ),
-                          SizedBox(height: 16),
-                          Text(
-                            'No scans Yet',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          const SizedBox(height: 12),
+                          PrimaryButton(
+                            label: 'Upload from gallery',
+                            icon: Icons.download,
+                            onTap: () {
+                              setState(() => _fabOpen = false);
+                              ref
+                                  .read(textScannerProvider.notifier)
+                                  .scanText(
+                                    source: ImageSource.gallery,
+                                  );
+                            },
                           ),
-                          SizedBox(height: 6),
-                          Text(
-                            'Tap the camera button below to scan your first\nhandwritten note',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.black54,
-                            ),
-                          ),
+                          const SizedBox(height: 16),
                         ],
+                      )
+                    : const SizedBox(
+                        key: ValueKey('empty'),
+                        height: 0,
                       ),
               ),
             ),
 
-            // -------- Bottom Buttons --------
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              child: Column(
-                children: [
-                  PrimaryButton(
-                    label: 'Scan Text',
-                    icon: Icons.camera_alt,
-                    onTap: () async {
-                      final imagePath = await Navigator.push<String>(
-                        context,
-                        MaterialPageRoute(builder: (_) => const CameraView()),
-                      );
-
-                      if (imagePath != null) {
-                        ref
-                            .read(textScannerProvider.notifier)
-                            .scanFromPath(imagePath);
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  PrimaryButton(
-                    label: 'Upload from gallery',
-                    icon: Icons.download,
-                    filled: false,
-                    onTap: () {
-                      ref
-                          .read(textScannerProvider.notifier)
-                          .scanText(source: ImageSource.gallery);
-                    },
-                  ),
-                ],
+            FloatingActionButton(
+              backgroundColor: const Color(0xFFBFC89A),
+              elevation: 0,
+              onPressed: () {
+                setState(() => _fabOpen = !_fabOpen);
+              },
+              child: AnimatedRotation(
+                turns: _fabOpen ? 0.125 : 0,
+                duration: const Duration(milliseconds: 200),
+                child: const Icon(Icons.add, color: Colors.black),
               ),
             ),
           ],
         ),
       ),
+    ],
+  ),
+),
+
+
+
+
     );
   }
 }
