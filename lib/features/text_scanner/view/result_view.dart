@@ -4,6 +4,7 @@ import 'package:notescan/shared/storage/scan_storage.dart';
 import 'package:notescan/shared/widgets/IconPill_button.dart';
 import 'package:notescan/shared/widgets/primary_button.dart';
 import 'package:notescan/shared/widgets/topPill_button.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ResultView extends StatefulWidget {
   final String text;
@@ -15,13 +16,18 @@ class ResultView extends StatefulWidget {
 }
 
 class _ResultViewState extends State<ResultView> {
+  String? scanId;
   @override
   void initState() {
     super.initState();
 
-    // Save ONLY if this is a new scan
+    // New scan → save & generate id
     if (widget.index == null) {
-      ScanStorage.save(widget.text);
+      scanId = ScanStorage.save(widget.text);
+    }
+    // Old scan → fetch existing id
+    else {
+      scanId = ScanStorage.getIdAt(widget.index!);
     }
   }
 
@@ -138,7 +144,13 @@ class _ResultViewState extends State<ResultView> {
                       label: 'Share',
                       icon: Icons.share,
                       filled: false,
-                      onTap: () {},
+                      onTap: () {
+                        if (scanId == null) return;
+
+                        final url =
+                            'https://notescan.vercel.app/result/$scanId';
+                        Share.share(url);
+                      },
                     ),
                   ),
                 ],

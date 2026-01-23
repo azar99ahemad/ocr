@@ -8,8 +8,12 @@ import 'app.dart';
 void main() async {
    WidgetsFlutterBinding.ensureInitialized(); 
    await Hive.initFlutter();
-  await Hive.openBox<String>('scans');
-ScanStorage.init();
+   // Delete old box (only if type mismatch)
+  if (Hive.isBoxOpen('scans')) {
+    await Hive.box('scans').close();
+  }
+  await Hive.deleteBoxFromDisk('scans');
+  ScanStorage.init();
 
   runApp(
     const ProviderScope(

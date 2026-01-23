@@ -64,11 +64,13 @@ class _CaptureViewState extends ConsumerState<CaptureView> {
                 child: CircularProgressIndicator(color: Color(0xFF6E7454)),
               )
             else
-              ValueListenableBuilder<List<String>>(
+              ValueListenableBuilder<List<Map<String, String>>>(
                 valueListenable: ScanStorage.scans,
                 builder: (context, scans, _) {
                   if (scans.isEmpty) return EmptyState();
-                  return ScanList(scans: scans);
+
+                  final texts = scans.map((e) => e['text']!).toList();
+                  return ScanList(scans: texts);
                 },
               ),
 

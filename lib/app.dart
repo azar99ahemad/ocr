@@ -1,14 +1,16 @@
  import 'package:flutter/material.dart';
-import 'package:notescan/features/text_scanner/view/capture_view.dart';
+
+import 'package:notescan/router/appRouter.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      home: CaptureView(),
+      routerConfig: appRouter,
+      
     );
   }
 }
